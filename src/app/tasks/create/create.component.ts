@@ -1,27 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { Task } from '../task.model';
+import { Component, OnInit } from "@angular/core";
+import { Task } from "../task.model";
 import {
   Form,
   FormControl,
   FormGroup,
   NgForm,
   Validators,
-} from '@angular/forms';
-import { TasksService } from '../task.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { fileTypeValidator } from './image-type.validator';
+} from "@angular/forms";
+import { TasksService } from "../task.service";
+import { ActivatedRoute, ParamMap } from "@angular/router";
+import { fileTypeValidator } from "./image-type.validator";
 
 @Component({
-  selector: 'app-task-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.scss'],
+  selector: "app-task-create",
+  templateUrl: "./create.component.html",
+  styleUrls: ["./create.component.scss"],
 })
 export class CreateTaskComponent implements OnInit {
-  newTask = 'abhi';
-  enteredValue = 'Hey';
-  enteredTitle = ' ';
-  enteredDescription = '';
-  public mode = 'create';
+  newTask = "abhi";
+  enteredValue = "Hey";
+  enteredTitle = " ";
+  enteredDescription = "";
+  public mode = "create";
   private id: string = null;
   public task: Task;
   isLoading = false;
@@ -43,9 +43,9 @@ export class CreateTaskComponent implements OnInit {
       }),
     });
     this.route.paramMap.subscribe((res: ParamMap) => {
-      if (res.has('id')) {
-        this.mode = 'edit';
-        this.id = res.get('id');
+      if (res.has("id")) {
+        this.mode = "edit";
+        this.id = res.get("id");
         this.isLoading = true;
         this.tasksService.getTasks(this.id).subscribe((res: any) => {
           delete res.data.__v;
@@ -69,7 +69,7 @@ export class CreateTaskComponent implements OnInit {
             validators: [Validators.required, fileTypeValidator],
           }),
         });
-        this.mode = 'create';
+        this.mode = "create";
         this.id = null;
       }
     });
@@ -82,10 +82,10 @@ export class CreateTaskComponent implements OnInit {
       description: this.taskForm.value.description,
       imagePath: this.taskForm.value.image,
     };
-    if (this.mode === 'create') {
+    if (this.mode === "create") {
       this.tasksService.addTask(task, this.taskForm.value.image);
     }
-    if (this.mode === 'edit') {
+    if (this.mode === "edit") {
       task._id = this.task._id;
       this.tasksService.updateTask(task);
     }
@@ -94,16 +94,13 @@ export class CreateTaskComponent implements OnInit {
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     this.taskForm.patchValue({ image: file });
-    this.taskForm.get('image').updateValueAndValidity();
+    this.taskForm.get("image").updateValueAndValidity();
     this.imageToDataUrl(file);
-    console.log(this.taskForm, file);
   }
   imageToDataUrl(file: File) {
     const reader = new FileReader();
     reader.onload = () => {
-      console.log(reader.result);
       this.imagePreview = reader.result;
-      console.log(this.imagePreview);
     };
     reader.readAsDataURL(file);
   }

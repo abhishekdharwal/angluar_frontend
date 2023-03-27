@@ -2,12 +2,39 @@
   <div class="div1">
     <span routerLink="">TODO LIST</span>
     <button
+      *ngIf="userIsAuthenticated"
       mat-button
       color="primary"
       routerLink="/create"
       routerLinkActive="mat-warn"
     >
       Create Task
+    </button>
+    <button
+      *ngIf="!userIsAuthenticated"
+      mat-button
+      color="primary"
+      routerLink="/login"
+      routerLinkActive="mat-warn"
+    >
+      Login
+    </button>
+    <button
+      *ngIf="!userIsAuthenticated"
+      mat-button
+      color="primary"
+      routerLink="/signup"
+      routerLinkActive="mat-warn"
+    >
+      Sign up
+    </button>
+    <button
+      *ngIf="userIsAuthenticated"
+      mat-button
+      color="primary"
+      (click)="onLogout()"
+    >
+      Logout
     </button>
   </div>
 </mat-toolbar>
